@@ -481,8 +481,25 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
+
     "*** YOUR CODE HERE ***"
-    return 0
+
+    from util import manhattanDistance
+
+    food_positions = foodGrid.asList()
+
+    if not food_positions:
+        return 0
+
+    max_distance_between_two_foods = 0
+    for i in range(len(food_positions)):
+        for j in range(i + 1, len(food_positions)):
+            distance = manhattanDistance(food_positions[i], food_positions[j])
+            max_distance_between_two_foods = max(max_distance_between_two_foods, distance)
+
+    distances_to_food = [manhattanDistance(position, food) for food in food_positions]
+
+    return min(distances_to_food) + max_distance_between_two_foods
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
